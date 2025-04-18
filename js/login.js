@@ -17,7 +17,7 @@ if (form) {
     if (foundUser) {
       errorMessage.style.display = "none";
       // Redirect to game screen (replace with your actual function)
-      showScreen("Game");
+      showScreen("Configurations");
     } else {
       errorMessage.style.display = "block";
     }
