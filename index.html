@@ -4,38 +4,45 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Spaceships Game</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .screen {
+      display: none;
+    }
+    .screen.active {
+      display: block;
+    }
+  </style>
 </head>
 <body>
   <header>
     <img src="./Assets/Images/SpaceShip Logo.png" alt="Spaceship Logo" />
     <h1>SPACESHIPS</h1>
   </header>
+
   <nav>
-    <a href="#">Home</a>
+    <a href="#" onclick="showScreen('Home')">Home</a>
     <a href="#" onclick="openAbout()">About</a>
   </nav>
+
   <div class="content">
-    <div id="Home">
-        <h1>Welcome to the spaceships!</h1>
-        <div class="button-container">
-        <button onclick="goToSignUp()">Sign Up</button>
-        <button onclick="goToLogin()">Login</button>
-        </div>
-        <div class="submitters">
-        <p><strong>Submitters:</strong> Barak Tubul - ID: 313557969 - <a href="https://wed-2023.github.io/313557969/">Homepage</a></p>
-        <p>Nofar Avraham - ID: 211648126 - <a href="https://wed-2023.github.io/211648126/">Homepage</a></p>
-        </div>
-    </div>
-    <div id = "Sign Up">
-        //* Sign Up form */
-    </div>
-    <div id = "Login">
-        //* Login form */
-    </div>
-    </div>
+    <div id="Home" class="screen active" data-include="components/home.html"></div>
+    <div id="SignUp" class="screen" data-include="components/signup.html"></div>
+    <div id="Login" class="screen" data-include="components/login.html"></div>
+  </div>
+
   <footer>
     All rights reserved. Contact us at: space@game.com
   </footer>
+
+  <script src="js/loader.js"></script>
+  <script>
+    function showScreen(screenId) {
+      document.querySelectorAll('.screen').forEach(el => {
+        el.classList.remove('active');
+      });
+      document.getElementById(screenId).classList.add('active');
+    }
+  </script>
 </body>
 </html>
