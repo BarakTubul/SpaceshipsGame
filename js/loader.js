@@ -1,3 +1,8 @@
+
+window.users = [
+  { username: "p", password: "testuser" }
+];
+
 function loadCSS(href) {
     if (document.querySelector(`link[href="${href}"]`)) return;
     const link = document.createElement("link");
