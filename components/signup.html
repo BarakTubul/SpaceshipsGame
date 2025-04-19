@@ -1,1 +1,29 @@
-<h2>Signup</h2>
+<div class="signup-container">
+    <h2>SIGN UP</h2>
+    <form id="signupForm">
+      <input type="text" id="signupUsername" placeholder="Username" required />
+      <input type="password" id="signupPassword" placeholder="Password" required />
+      <input type="password" id="signupConfirm" placeholder="Confirm Password" required />
+      <input type="text" id="firstName" placeholder="First Name" required />
+      <input type="text" id="lastName" placeholder="Last Name" required />
+      <input type="email" id="email" placeholder="Email" required />
+      <div class="dob-row">
+        <select id="dobYear" required>
+          <option value="">Year</option>
+          <!-- Years dynamically added in JS -->
+        </select>
+        <select id="dobMonth" required>
+          <option value="">Month</option>
+          <!-- Months dynamically added in JS -->
+        </select>
+        <select id="dobDay" required>
+          <option value="">Day</option>
+          <!-- Days dynamically added in JS -->
+        </select>
+      </div>
+  
+      <button type="submit">SIGN UP</button>
+      <p class="error-message" id="signupError"></p>
+    </form>
+  </div>
+  
