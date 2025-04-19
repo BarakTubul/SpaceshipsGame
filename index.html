@@ -43,8 +43,24 @@
       document.querySelectorAll('.screen').forEach(el => {
         el.classList.remove('active');
       });
-      document.getElementById(screenId).classList.add('active');
+      const target = document.getElementById(screenId);
+      if (!target) return;
+      target.classList.add('active');
+  
+      // Screen-specific initialization
+      if (screenId === "Configurations" && typeof initConfigForm === "function") {
+        initConfigForm();
+      }
+  
+      if (screenId === "SignUp" && typeof initSignupForm === "function") {
+        initSignupForm();
+      }
+  
+      if (screenId === "Login" && typeof initLoginForm === "function") {
+        initLoginForm();
+      }
     }
   </script>
+  
 </body>
 </html>

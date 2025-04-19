@@ -96,5 +96,4 @@ function isValidEmail(email) {
     });
   }
   
-  initSignupForm();
   

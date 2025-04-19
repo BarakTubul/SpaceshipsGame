@@ -2,7 +2,7 @@
 window.users = [
   { username: "p", password: "testuser" }
 ];
-
+//Bind the CSS with the HTML
 function loadCSS(href) {
     if (document.querySelector(`link[href="${href}"]`)) return;
     const link = document.createElement("link");
@@ -10,7 +10,7 @@ function loadCSS(href) {
     link.href = href;
     document.head.appendChild(link);
   }
-  
+  //Adds the js to the script tag of the html
   function loadJS(src) {
     if (document.querySelector(`script[src="${src}"]`)) return;
     const script = document.createElement("script");
