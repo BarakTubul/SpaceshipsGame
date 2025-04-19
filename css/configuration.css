@@ -1,0 +1,78 @@
+.config-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+    color: white;
+  }
+  
+  .config-container h2 {
+    font-size: 2.5rem;
+    color: #ffd700;
+    text-shadow: 2px 2px 0 #000;
+    margin-bottom: 2rem;
+  }
+  
+  #configForm {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    width: 300px;
+    text-align: left;
+  }
+  
+  #configForm label {
+    font-weight: bold;
+    margin-bottom: 0.3rem;
+    color: #fff;
+  }
+  
+  #configForm input,
+  #configForm select {
+    padding: 0.6rem;
+    font-size: 1rem;
+    border-radius: 6px;
+    border: none;
+    background-color: #1a1a2e;
+    color: white;
+    width: 100%;
+  }
+  
+  .color-options {
+    display: flex;
+    justify-content: flex-start;
+    gap: 1rem;
+    margin-top: 0.5rem;
+  }
+  
+  .color-box {
+    width: 40px;
+    height: 40px;
+    border-radius: 6px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: border-color 0.3s;
+  }
+  
+  .color-box.selected {
+    border-color: white;
+  }
+  
+  #configForm button {
+    background-color: #007bff;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    padding: 0.9rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 1.5rem;
+  }
+  
+  #configForm button:hover {
+    background-color: #0056b3;
+  }

@@ -1,6 +1,24 @@
 <div class="config-container">
-    <h2>Configuration</h2>
-    <!-- Your inputs and settings go here -->
-    <button onclick="startGame()">Start Game</button>
-</div>
+    <h2>CONFIGURATION</h2>
   
+    <form id="configForm">
+      <label for="shootKey">Shoot Key:</label>
+      <input type="text" id="shootKey" maxlength="1" value="Z" required />
+  
+      <label for="gameTime">Game Time:</label>
+      <select id="gameTime" required>
+        <option value="1">1 minute</option>
+        <option value="2" selected>2 minutes</option>
+        <option value="3">3 minutes</option>
+        <option value="5">5 minutes</option>
+      </select>
+  
+      <label>Ship Colors:</label>
+      <div class="color-options">
+        <div class="color-box" data-color="#f5a623" style="background-color: #f5a623"></div>
+        <div class="color-box" data-color="#1abc9c" style="background-color: #1abc9c"></div>
+      </div>
+  
+      <button type="submit">START GAME</button>
+    </form>
+  </div>
