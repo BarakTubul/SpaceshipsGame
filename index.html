@@ -30,7 +30,7 @@
     <div id="SignUp" class="screen" data-include="components/signup.html"></div>
     <div id="Login" class="screen" data-include="components/login.html"></div>
     <div id="Configurations" class="screen" data-include="components/configuration.html"></div>
-
+    <div id="Game" class="screen" data-include="components/Game.html"></div>
   </div>
 
   <footer>
@@ -59,6 +59,11 @@
       if (screenId === "Login" && typeof initLoginForm === "function") {
         initLoginForm();
       }
+
+      if (screenId === "Game" && typeof initGame === "function") {
+        initGame();
+      }
+
     }
   </script>
   

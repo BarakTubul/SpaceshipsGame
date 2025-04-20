@@ -56,10 +56,13 @@ function initConfigForm() {
 
     // Save settings
     window.config = {
-      shootKey: selectedShootKey,
-      gameTime: parseInt(document.getElementById("gameTime").value),
+      shootKey: selectedShootKey.toLowerCase(),
+      gameTime: parseFloat(document.getElementById("gameTime").value),
       color: selectedColor || "#f5a623"
     };
+
+    console.log("✅ Saving user config:", window.config);
+
 
     showScreen("Game");
   });

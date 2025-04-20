@@ -1,0 +1,18 @@
+body {
+    margin: 0;
+    overflow: hidden;
+    background-color: black;
+  }
+  canvas {
+    display: block;
+    background-image: url('./Assets/Images/space-bg.jpg');
+    background-size: cover;
+  }
+  #hud {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    color: white;
+    font-family: monospace;
+    font-size: 18px;
+  }
