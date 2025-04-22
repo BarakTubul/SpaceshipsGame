@@ -1,3 +1,12 @@
+// Audio
+const victorySound = new Audio('./Assets/Audio/victory.mp3');
+const lostSound = new Audio('./Assets/Audio/lost.mp3');
+const bgMusic = new Audio('./Assets/Audio/background.mp3');
+bgMusic.loop = true;
+
+const hitSound = new Audio('./Assets/Audio/hit.mp3');
+const loseLifeSound = new Audio('./Assets/Audio/lost-life.mp3');
+
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 canvas.width = window.innerWidth;
@@ -11,9 +20,14 @@ const heartImg = new Image();
 heartImg.src = './Assets/Images/heart.png';
 
 // Game variables
-const player = {
+const initialPlayerPosition = {
     x: Math.random() * (canvas.width - 50),
-    y: canvas.height - 60,
+    y: canvas.height - 60
+};
+
+const player = {
+    x: initialPlayerPosition.x,
+    y: initialPlayerPosition.y,
     width: 50,
     height: 50,
     speed: 5
@@ -49,6 +63,11 @@ const speedIncreaseInterval = 5000;
 let bullets = [];
 const bulletSpeed = 8;
 
+// Enemy bullets
+let enemyBullets = [];
+const enemyBulletSpeed = 4;
+let lastEnemyShotY = canvas.height; // Start as bottom so first shot is allowed
+
 function createEnemies() {
     enemies = [];
     for (let row = 0; row < enemyRows; row++) {
@@ -81,9 +100,22 @@ function moveEnemies() {
 
     const now = Date.now();
     if (speedBoostCount < maxSpeedBoosts && now - lastSpeedIncreaseTime >= speedIncreaseInterval) {
-        enemySpeed += 0.5; // Increase speed
+        enemySpeed += 0.5;
         speedBoostCount++;
         lastSpeedIncreaseTime = now;
+    }
+
+    // Enemy shooting
+    if (enemyBullets.length === 0 || enemyBullets[enemyBullets.length - 1].y > canvas.height * 0.75) {
+        const shooter = enemies[Math.floor(Math.random() * enemies.length)];
+        if (shooter) {
+            enemyBullets.push({
+                x: shooter.x + shooter.width / 2 - 2,
+                y: shooter.y + shooter.height,
+                width: 4,
+                height: 10
+            });
+        }
     }
 }
 
@@ -112,15 +144,17 @@ function drawBullets() {
     bullets.forEach(bullet => {
         ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
     });
+
+    ctx.fillStyle = 'red';
+    enemyBullets.forEach(bullet => {
+        ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
+    });
 }
 
 function updateBullets() {
     bullets.forEach(bullet => bullet.y -= bulletSpeed);
-
-    // Remove off-screen bullets
     bullets = bullets.filter(bullet => bullet.y + bullet.height > 0);
 
-    // Check for collisions
     bullets.forEach((bullet, i) => {
         enemies.forEach((enemy, j) => {
             if (
@@ -133,9 +167,31 @@ function updateBullets() {
                 enemies.splice(j, 1);
                 const rowScore = [20, 15, 10, 5];
                 score += rowScore[enemy.row];
+                hitSound.play();
             }
         });
     });
+
+    enemyBullets.forEach((bullet, index) => {
+        bullet.y += enemyBulletSpeed;
+        if (
+            bullet.x < player.x + player.width &&
+            bullet.x + bullet.width > player.x &&
+            bullet.y < player.y + player.height &&
+            bullet.y + bullet.height > player.y
+        ) {
+            lives--;
+            player.x = initialPlayerPosition.x;
+            player.y = initialPlayerPosition.y;
+            enemyBullets.splice(index, 1);
+            loseLifeSound.play();
+            if (lives <= 0) {
+                endGame('lives');
+            }
+        }
+    });
+
+    enemyBullets = enemyBullets.filter(bullet => bullet.y < canvas.height);
 }
 
 function drawHUD() {
@@ -154,11 +210,15 @@ function drawHUD() {
     ctx.fillText(`Time Left: ${remaining}s`, canvas.width / 2 - 50, 30);
 
     if (elapsed >= gameDuration) {
-        endGame();
+        endGame('time');
     }
 }
 
 function update() {
+    if (enemies.length === 0) {
+        endGame('allEnemiesKilled');
+        return;
+    }
     if (keys['ArrowLeft'] && player.x > 0) player.x -= player.speed;
     if (keys['ArrowRight'] && (player.x + player.width) < canvas.width) player.x += player.speed;
     if (keys['ArrowUp'] && player.y > gameAreaHeightLimit) player.y -= player.speed;
@@ -176,18 +236,63 @@ function draw() {
     drawHUD();
 }
 
+let isGameRunning = true;
+
 function gameLoop() {
+    if (!isGameRunning) return;
     update();
     draw();
     requestAnimationFrame(gameLoop);
 }
 
-function endGame() {
-    alert('⏰ Game Over!');
-    window.location.reload();
+function endGame(reason) {
+    isGameRunning = false;
+    bgMusic.pause();
+    bgMusic.currentTime = 0;
+
+    let message = "";
+
+    if (reason === 'lives') {
+        message = "You Lost!";
+        lostSound.play();
+    } else if (reason === 'time') {
+        if (score < 100) {
+            message = `You can do better. Score: ${score}`;
+            lostSound.play();
+        } else {
+            message = `Winner! Score: ${score}`;
+            victorySound.play();
+        }
+    } else if (reason === 'allEnemiesKilled') {
+        message = `Champion! Score: ${score}`;
+        victorySound.play();
+    }
+
+    setTimeout(() => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        ctx.textAlign = 'center';
+
+        ctx.fillStyle = '#ffd700';
+        ctx.font = '48px Arial';
+        ctx.fillText(message, canvas.width / 2, canvas.height / 2 - 20);
+
+        ctx.font = '24px Arial';
+        ctx.fillStyle = '#ffffff';
+        ctx.fillText('Click anywhere to return to Home', canvas.width / 2, canvas.height / 2 + 30);
+
+        ctx.font = '16px Arial';
+        ctx.fillStyle = '#999';
+
+        canvas.addEventListener('click', () => window.location.reload(), { once: true });
+    }, 300);
 }
 
+
+// Removed duplicate showEndScreen function as it is now inline in endGame
+
 function initGame() {
+    bgMusic.play().catch(() => {});
     createEnemies();
     startTime = Date.now();
     gameDuration = (window.config?.gameTime || 2) * 60 * 1000;

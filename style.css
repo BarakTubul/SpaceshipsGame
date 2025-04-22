@@ -1,16 +1,19 @@
 body {
   margin: 0;
+  padding: 0;
   font-family: Arial, sans-serif;
   background-color: #0f0124;
   color: white;
   min-width: 1366px;
   min-height: 768px;
-  height: 100vh;
-  width: 100vw;
+  height: 1366;
+  width: 768;
   display: flex;
   flex-direction: column;
 }
 html {
+  margin: 0;
+  padding: 0;
   height: 100%;
   width: 100%;
 }
@@ -52,6 +55,12 @@ nav a {
   align-items: center;
   padding: 2rem;
   background-image: url(/Assets/Images/space.png);
+}
+canvas {
+  display: block;
+  margin: 30px auto;
+  /* border: 2px solid white;
+  background-color: black; */
 }
 
 footer {
