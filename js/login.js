@@ -16,6 +16,7 @@ if (form) {
 
     if (foundUser) {
       errorMessage.style.display = "none";
+      window.currentUser = username;
       // Redirect to game screen (replace with your actual function)
       showScreen("Configurations");
     } else {

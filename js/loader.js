@@ -2,6 +2,7 @@
 window.users = [
   { username: "p", password: "testuser" }
 ];
+window.scores = [];
 //Bind the CSS with the HTML
 function loadCSS(href) {
     if (document.querySelector(`link[href="${href}"]`)) return;

@@ -36,8 +36,8 @@ const keys = {};
 const gameAreaHeightLimit = canvas.height * 0.6;
 
 // Game state
-let score = 0;
-let lives = 3;
+let score;
+let lives;
 let startTime;
 let gameDuration;
 let shootKey;
@@ -58,7 +58,6 @@ let speedBoostCount = 0;
 let lastSpeedIncreaseTime = Date.now();
 const maxSpeedBoosts = 4;
 const speedIncreaseInterval = 5000;
-
 // Bullets
 let bullets = [];
 const bulletSpeed = 8;
@@ -236,7 +235,7 @@ function draw() {
     drawHUD();
 }
 
-let isGameRunning = true;
+let isGameRunning;
 
 function gameLoop() {
     if (!isGameRunning) return;
@@ -267,6 +266,9 @@ function endGame(reason) {
         message = `Champion! Score: ${score}`;
         victorySound.play();
     }
+    const now = new Date();
+    const timeString = now.toLocaleTimeString('en-GB'); // HH:MM:SS
+    window.scores.push({ score, time: timeString });
 
     setTimeout(() => {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -279,12 +281,11 @@ function endGame(reason) {
 
         ctx.font = '24px Arial';
         ctx.fillStyle = '#ffffff';
-        ctx.fillText('Click anywhere to return to Home', canvas.width / 2, canvas.height / 2 + 30);
+        ctx.fillText('Click anywhere to continue', canvas.width / 2, canvas.height / 2 + 30);
 
         ctx.font = '16px Arial';
         ctx.fillStyle = '#999';
-
-        canvas.addEventListener('click', () => window.location.reload(), { once: true });
+        canvas.addEventListener('click', () => showScreen("HighScores"), { once: true });
     }, 300);
 }
 
@@ -292,6 +293,9 @@ function endGame(reason) {
 // Removed duplicate showEndScreen function as it is now inline in endGame
 
 function initGame() {
+    score = 0;
+    lives = 3;
+    isGameRunning = true;
     bgMusic.play().catch(() => {});
     createEnemies();
     startTime = Date.now();

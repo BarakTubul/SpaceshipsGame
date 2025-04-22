@@ -31,6 +31,7 @@
     <div id="Login" class="screen" data-include="components/login.html"></div>
     <div id="Configurations" class="screen" data-include="components/configuration.html"></div>
     <div id="Game" class="screen" data-include="components/Game.html"></div>
+    <div id="HighScores" class="screen" data-include="components/highscores.html"></div>
   </div>
 
   <footer>
@@ -62,6 +63,9 @@
 
       if (screenId === "Game" && typeof initGame === "function") {
         initGame();
+      }
+      if (screenId === "HighScores" && typeof initGame === "function") {
+        initHighScores();
       }
 
     }

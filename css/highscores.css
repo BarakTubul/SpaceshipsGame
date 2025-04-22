@@ -1,0 +1,61 @@
+.high-scores-container {
+    background-color: #1c0033;
+    color: white;
+    text-align: center;
+    width: 400px;
+    padding: 20px;
+    border-radius: 10px;
+    font-family: 'Arial Black', sans-serif;
+    margin: 50px auto;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+  }
+  
+  .high-scores-container h1 {
+    font-size: 32px;
+    margin-bottom: 20px;
+  }
+  
+  .high-scores-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+  
+  .high-scores-table th,
+  .high-scores-table td {
+    padding: 10px;
+    font-size: 18px;
+  }
+  
+  .high-scores-table thead {
+    background-color: #330011;
+  }
+  
+  .high-scores-table tbody tr {
+    background-color: #220011;
+  }
+  
+  .high-scores-table .score {
+    color: yellow;
+    font-weight: bold;
+  }
+  
+  .buttons {
+    display: flex;
+    justify-content: space-around;
+  }
+  
+  .buttons button {
+    background-color: #330011;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .buttons button:hover {
+    background-color: #550022;
+  }
+  
