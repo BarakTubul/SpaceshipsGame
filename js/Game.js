@@ -20,18 +20,9 @@ const heartImg = new Image();
 heartImg.src = './Assets/Images/heart.png';
 
 // Game variables
-const initialPlayerPosition = {
-    x: Math.random() * (canvas.width - 50),
-    y: canvas.height - 60
-};
+let initialPlayerPosition;
 
-const player = {
-    x: initialPlayerPosition.x,
-    y: initialPlayerPosition.y,
-    width: 50,
-    height: 50,
-    speed: 5
-};
+let player;
 const keys = {};
 const gameAreaHeightLimit = canvas.height * 0.6;
 
@@ -51,21 +42,23 @@ const enemyGapX = 70;
 const enemyGapY = 50;
 const enemyColors = ['#ff5e57', '#feca57', '#48dbfb', '#1dd1a1'];
 
-let enemies = [];
-let enemyDirection = 1;
-let enemySpeed = 0.5;
-let speedBoostCount = 0;
-let lastSpeedIncreaseTime = Date.now();
+
+// Enemy movement
+let enemies;
+let enemyDirection;
+let enemySpeed;
+let speedBoostCount;
+let lastSpeedIncreaseTime;
 const maxSpeedBoosts = 4;
 const speedIncreaseInterval = 5000;
 // Bullets
-let bullets = [];
+let bullets;
 const bulletSpeed = 8;
 
 // Enemy bullets
-let enemyBullets = [];
+let enemyBullets;
 const enemyBulletSpeed = 4;
-let lastEnemyShotY = canvas.height; // Start as bottom so first shot is allowed
+let lastEnemyShotY;
 
 function createEnemies() {
     enemies = [];
@@ -293,8 +286,32 @@ function endGame(reason) {
 // Removed duplicate showEndScreen function as it is now inline in endGame
 
 function initGame() {
+    // Game variables
+    initialPlayerPosition = {
+        x: Math.random() * (canvas.width - 50),
+        y: canvas.height - 60
+    };
+
+    player = {
+        x: initialPlayerPosition.x,
+        y: initialPlayerPosition.y,
+        width: 50,
+        height: 50,
+        speed: 5
+    };
+
+    enemies = [];
+    enemyDirection = 1;
+    enemySpeed = 0.5;
+    speedBoostCount = 0;
+    lastSpeedIncreaseTime = Date.now();
+    bullets = [];
+    enemyBullets = [];
+    lastEnemyShotY = canvas.height; // Start as bottom so first shot is allowed
     score = 0;
     lives = 3;
+
+
     isGameRunning = true;
     bgMusic.play().catch(() => {});
     createEnemies();
