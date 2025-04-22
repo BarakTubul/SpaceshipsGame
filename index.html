@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Spaceships Game</title>
   <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css" />
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
   <style>
     .screen {
       display: none;
@@ -22,7 +25,7 @@
 
   <nav>
     <a href="#" onclick="showScreen('Home')">Home</a>
-    <a href="#" onclick="openAbout()">About</a>
+    <a href="#" onclick= "initAbout()">About</a>
   </nav>
 
   <div class="content">
@@ -32,6 +35,7 @@
     <div id="Configurations" class="screen" data-include="components/configuration.html"></div>
     <div id="Game" class="screen" data-include="components/Game.html"></div>
     <div id="HighScores" class="screen" data-include="components/highscores.html"></div>
+    <div id="About" class="screen" data-include="components/about.html"></div>
   </div>
 
   <footer>
@@ -67,7 +71,7 @@
       if (screenId === "HighScores" && typeof initGame === "function") {
         initHighScores();
       }
-
+      
     }
   </script>
   
