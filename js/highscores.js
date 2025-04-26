@@ -29,6 +29,7 @@ function initHighScores() {
   
     // Handle "Exit"
     exitBtn?.addEventListener("click", () => {
+      window.scores = []; // Clear scores if needed
       console.log("Exit Button Clicked")
       showScreen("Home");
     });
