@@ -58,4 +58,14 @@
   .buttons button:hover {
     background-color: #550022;
   }
+  .high-scores-table tbody tr.current-score {
+    background-color: #ffd93d; /* Soft Gold */
+    color: #1c0033; /* Deep purple text (matches your theme) */
+    font-weight: bold;
+    border-radius: 8px;
+    box-shadow: 0 0 10px #ffd93d; /* subtle glowing effect */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+
   

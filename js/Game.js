@@ -125,6 +125,17 @@ document.addEventListener('keydown', e => {
 
 document.addEventListener('keyup', e => keys[e.key] = false);
 
+// Handle New Game Button
+document.getElementById("newGameButton")?.addEventListener("click", () => {
+    console.log("New Game button clicked");
+    isGameRunning = false; // Stop the current game loop
+    bgMusic.pause();       // Stop background music
+    bgMusic.currentTime = 0;
+
+    showScreen("Game");    // Re-load the game screen
+});
+
+
 function drawPlayer() {
     if (playerImg.complete) {
         ctx.drawImage(playerImg, player.x, player.y, player.width, player.height);
@@ -189,7 +200,7 @@ function updateBullets() {
 function drawHUD() {
     ctx.fillStyle = 'white';
     ctx.font = '20px Arial';
-    ctx.fillText(`Score: ${score}`, 20, 30);
+    ctx.fillText(`Score: ${score}`, canvas.width * 0.05, canvas.height * 0.05);
 
     for (let i = 0; i < lives; i++) {
         if (heartImg.complete) {
@@ -229,12 +240,13 @@ function draw() {
 }
 
 let isGameRunning;
+let animationFrameId = null;
 
 function gameLoop() {
     if (!isGameRunning) return;
     update();
     draw();
-    requestAnimationFrame(gameLoop);
+    animationFrameId = requestAnimationFrame(gameLoop); // Save the ID
 }
 
 function endGame(reason) {
@@ -286,6 +298,12 @@ function endGame(reason) {
 // Removed duplicate showEndScreen function as it is now inline in endGame
 
 function initGame() {
+    // 🛠 Cancel any previous animation frame
+    if (animationFrameId !== null) {
+        cancelAnimationFrame(animationFrameId);
+        animationFrameId = null;
+    }
+
     // Game variables
     initialPlayerPosition = {
         x: Math.random() * (canvas.width - 50),
