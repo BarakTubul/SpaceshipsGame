@@ -25,11 +25,11 @@
 
   <nav>
     <a href="#" onclick="showScreen('Home')">Home</a>
-    <a href="#" onclick= "initAbout()">About</a>
+    <a href="#" onclick= "showScreen('About')">About</a>
   </nav>
 
   <div class="content">
-    <div id="Home" class="screen active" data-include="components/home.html"></div>
+    <div id="Home" class="screen" data-include="components/home.html"></div>
     <div id="SignUp" class="screen" data-include="components/signup.html"></div>
     <div id="Login" class="screen" data-include="components/login.html"></div>
     <div id="Configurations" class="screen" data-include="components/configuration.html"></div>
@@ -42,37 +42,83 @@
     All rights reserved. Contact us at: space@game.com
   </footer>
 
-  <script src="js/loader.js"></script>
   <script>
-    function showScreen(screenId) {
-      document.querySelectorAll('.screen').forEach(el => {
-        el.classList.remove('active');
-      });
+    window.scores = [];
+    
+    window.users = [
+    { username: "p", password: "testuser" }]
+
+    async function showScreen(screenId) {
+      console.log(`loading ${screenId}`)
+      // Hide all screens
+      document.querySelectorAll(".screen").forEach(el => el.classList.remove("active"));
+      
       const target = document.getElementById(screenId);
       if (!target) return;
-      target.classList.add('active');
-  
-      // Screen-specific initialization
-      if (screenId === "Configurations" && typeof initConfigForm === "function") {
-        initConfigForm();
+
+      // Lazy-load the screen content only once
+      if (!target.dataset.loaded) {
+        console.log(`loading ${screenId} code`)
+        const file = target.getAttribute("data-include");
+        const res = await fetch(file);
+        const html = await res.text();
+        target.innerHTML = html;
+        target.dataset.loaded = "true";
+
+        // Load CSS
+        const baseName = file.split('/').pop().replace('.html', '');
+        loadCSS(`css/${baseName}.css`);
+        console.log("finished loading css!")
+
+        // Load JS and execute it
+        loadJS(`js/${baseName}.js`, () => {
+          const event = new CustomEvent("screenLoaded", { detail: { screenId } });
+          target.dispatchEvent(event);
+        });
+        console.log("finished loading js!")
+      
+        // Already loaded → just fire the event again
+      }else{
+          const event = new CustomEvent("screenLoaded", { detail: { screenId } });
+          target.dispatchEvent(event);
       }
-  
-      if (screenId === "SignUp" && typeof initSignupForm === "function") {
-        initSignupForm();
-      }
-  
-      if (screenId === "Login" && typeof initLoginForm === "function") {
-        initLoginForm();
+        // Show the selected screen
+        target.classList.add("active");
+    }
+    
+      
+    // Dynamically load a CSS file, only once
+    function loadCSS(href) {
+      if (document.querySelector(`link[href="${href}"]`)) return; // already loaded
+      const link = document.createElement("link");
+      link.rel = "stylesheet";
+      link.href = href;
+      document.head.appendChild(link);
+    }
+
+    // Dynamically load a JS file, only once
+    function loadJS(src, onLoad) {
+      // Prevent loading the same script twice
+      if (document.querySelector(`script[src="${src}"]`)) {
+        if (typeof onLoad === "function") {
+          onLoad();
+        }
+        return;
       }
 
-      if (screenId === "Game" && typeof initGame === "function") {
-        initGame();
-      }
-      if (screenId === "HighScores" && typeof initGame === "function") {
-        initHighScores();
-      }
-      
+      const script = document.createElement("script");
+      script.src = src;
+      script.defer = true;
+      script.onload = () => {
+        if (typeof onLoad === "function") {
+          onLoad();
+        }
+      };
+
+      document.body.appendChild(script);
     }
+
+    showScreen('Home');
   </script>
   
 </body>

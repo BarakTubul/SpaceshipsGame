@@ -337,4 +337,14 @@ function initGame() {
     gameDuration = (window.config?.gameTime || 2) * 60 * 1000;
     shootKey = window.config?.shootKey || ' ';
     gameLoop();
+
+
 }
+
+
+document.getElementById("Game")?.addEventListener("screenLoaded", (e) => {
+  if (e.detail.screenId === "Game") {
+    console.log("Initializing Game!")
+    initGame();
+  }
+});
