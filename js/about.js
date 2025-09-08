@@ -49,3 +49,10 @@ function initAbout() {
     }
   });
 }
+
+document.getElementById("About")?.addEventListener("screenLoaded", (e) => {
+  if (e.detail.screenId === "About") {
+    console.log("Initializing about!")
+    initAbout();
+  }
+});

@@ -66,5 +66,12 @@ function initConfigForm() {
 
     showScreen("Game");
   });
+
 }
 
+document.getElementById("Configurations")?.addEventListener("screenLoaded", (e) => {
+  if (e.detail.screenId === "Configurations") {
+    console.log("Initializing Configurations!")
+    initConfigForm();
+  }
+  });

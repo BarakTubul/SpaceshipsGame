@@ -50,3 +50,11 @@ function initHighScores() {
     showScreen("Home");
   });
 }
+
+document.getElementById("HighScores")?.addEventListener("screenLoaded", (e) => {
+  if (e.detail.screenId === "HighScores") {
+    console.log("Initializing HighScores!")
+    initHighScores();
+  }
+});
+

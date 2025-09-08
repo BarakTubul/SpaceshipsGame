@@ -25,7 +25,7 @@
 
   <nav>
     <a href="#" onclick="showScreen('Home')">Home</a>
-    <a href="#" onclick= "initAbout()">About</a>
+    <a href="#" onclick= "showScreen('About')">About</a>
   </nav>
 
   <div class="content">
@@ -44,7 +44,12 @@
 
   <script>
     window.scores = [];
+    
+    window.users = [
+    { username: "p", password: "testuser" }]
+
     async function showScreen(screenId) {
+      console.log(`loading ${screenId}`)
       // Hide all screens
       document.querySelectorAll(".screen").forEach(el => el.classList.remove("active"));
       
@@ -53,6 +58,7 @@
 
       // Lazy-load the screen content only once
       if (!target.dataset.loaded) {
+        console.log(`loading ${screenId} code`)
         const file = target.getAttribute("data-include");
         const res = await fetch(file);
         const html = await res.text();
@@ -62,19 +68,24 @@
         // Load CSS
         const baseName = file.split('/').pop().replace('.html', '');
         loadCSS(`css/${baseName}.css`);
+        console.log("finished loading css!")
 
         // Load JS and execute it
-        const jsPath = `js/${baseName}.js`;
-        loadJS(jsPath);
-
-        // trigger a custom "loaded" event so the screen’s own script
-        const event = new CustomEvent("screenLoaded", { detail: { screenId } });
-        target.dispatchEvent(event);
+        loadJS(`js/${baseName}.js`, () => {
+          const event = new CustomEvent("screenLoaded", { detail: { screenId } });
+          target.dispatchEvent(event);
+        });
+        console.log("finished loading js!")
+      
+        // Already loaded → just fire the event again
+      }else{
+          const event = new CustomEvent("screenLoaded", { detail: { screenId } });
+          target.dispatchEvent(event);
       }
-
-      // Show the selected screen
+        // Show the selected screen
         target.classList.add("active");
     }
+    
       
     // Dynamically load a CSS file, only once
     function loadCSS(href) {
@@ -86,13 +97,27 @@
     }
 
     // Dynamically load a JS file, only once
-    function loadJS(src) {
-      if (document.querySelector(`script[src="${src}"]`)) return; // already loaded
+    function loadJS(src, onLoad) {
+      // Prevent loading the same script twice
+      if (document.querySelector(`script[src="${src}"]`)) {
+        if (typeof onLoad === "function") {
+          onLoad();
+        }
+        return;
+      }
+
       const script = document.createElement("script");
       script.src = src;
-      script.defer = true; // ensures it runs after parsing
+      script.defer = true;
+      script.onload = () => {
+        if (typeof onLoad === "function") {
+          onLoad();
+        }
+      };
+
       document.body.appendChild(script);
     }
+
     showScreen('Home');
   </script>
   

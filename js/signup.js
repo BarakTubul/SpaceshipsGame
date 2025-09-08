@@ -94,6 +94,13 @@ function isValidEmail(email) {
       alert("Registration successful! You can now log in.");
       showScreen("Login");
     });
+
+    
   }
   
-  
+  document.getElementById("SignUp")?.addEventListener("screenLoaded", (e) => {
+  if (e.detail.screenId === "SignUp") {
+    console.log("Initializing SignUp!")
+    initSignupForm();
+  }
+  });
